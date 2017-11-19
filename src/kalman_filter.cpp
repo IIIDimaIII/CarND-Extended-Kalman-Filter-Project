@@ -58,7 +58,7 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   
   VectorXd z_pred(3);
   z_pred <<	pow(x_[0] * x_[0] + x_[1] * x_[1], 2),
-			atan(x_[1]/x_[0],
+			atan(x_[1]/x_[0]),
 			(x_[0]*x_[2] + x_[1]*x_[3]) / pow(x_[0] * x_[0] + x_[1] * x_[1], 2);
   
   VectorXd y = z - z_pred;
