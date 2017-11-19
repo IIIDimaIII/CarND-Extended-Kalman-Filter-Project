@@ -93,9 +93,9 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
       float ro_dot;
 	  int px;
 	  int py;
-	  ro = measurement_pack.raw_measurements_[0]
-	  theta = measurement_pack.raw_measurements_[1]
-	  ro_dot = measurement_pack.raw_measurements_[2]
+	  ro = measurement_pack.raw_measurements_[0];
+	  theta = measurement_pack.raw_measurements_[1];
+	  ro_dot = measurement_pack.raw_measurements_[2];
 	  
 	  px = ro * cos(theta);
 	  py = ro * sin(theta);
@@ -108,6 +108,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
 				0, 0, 0, 0;
 	  
 	  MatrixXd R_init = R_radar_; //initialize variable separately???
+	  ekf_.Init(x_init, P_init, F_init, H_init, R_init, Q_init);
 	  
     }
     else if (measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
@@ -121,10 +122,11 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
 	  H_init << 1, 0, 0, 0,
 	            0, 1, 0, 0;
 	  MatrixXd R_init = R_laser_; //initialize variable separately???
+	  ekf_.Init(x_init, P_init, F_init, H_init, R_init, Q_init);
 	  
     }
 	
-	ekf_.Init(x_init, P_init, F_init, H_init, R_init, Q_init);
+	
 	
     // done initializing, no need to predict or update
     is_initialized_ = true;
