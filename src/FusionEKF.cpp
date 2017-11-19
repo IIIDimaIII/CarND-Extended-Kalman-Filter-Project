@@ -149,6 +149,11 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
 	int noise_ay = 9;
 	
    	//compute the time elapsed between the current and previous measurements
+	float dt;
+	dt_2 = pow(dt,2);
+	dt_3 = pow(dt,3);
+	dt_4 = pow(dt,4);
+	
 	dt = (measurement_pack.timestamp_ - previous_timestamp_) / 1000000 ;	//dt - expressed in seconds
 	previous_timestamp_ = measurement_pack.timestamp_;
 	
@@ -178,15 +183,15 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
 
   if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
     // Radar updates
-	Hj_ = tools.CalculateJacobian(x_) //TODO: Check calculation
-	ekf_.H_ = Hj_
-	ekf_.R_ = R_radar_
+	Hj_ = tools.CalculateJacobian(ekf_.x_); //TODO: Check calculation
+	ekf_.H_ = Hj_;
+	ekf_.R_ = R_radar_;
 	
 	ekf_.UpdateEKF(z);
   } else {
     // Laser updates
-	ekf_.H_ = H_laser_
-	ekf_.R_ = R_laser_
+	ekf_.H_ = H_laser_;
+	ekf_.R_ = R_laser_;
 	ekf_.Update(z);
   }
 
