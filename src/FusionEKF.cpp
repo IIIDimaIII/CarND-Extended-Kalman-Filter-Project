@@ -62,22 +62,22 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
     */
     // first measurement
     cout << "EKF: " << endl;
-    x_init = VectorXd(4);
+    VectorXd x_init(4);
     x_init << 1, 1, 1, 1;
 	
-	F_init = MatrixXd(4, 4);
+	MatrixXd F_init(4, 4);
 	F_init << 1, 0, 1, 0,
 	          0, 1, 0, 1,
 			  0, 0, 1, 0,
 			  0, 0, 0, 1;
 	
-	P_init = MatrixXd(4, 4);
+	MatrixXd P_init(4, 4);
 	P_init << 1, 0,   0,   0,
 	          0, 1,   0,   0,
 			  0, 0, 1000,  0,
 			  0, 0,   0, 1000;
 	
-	Q_init = MatrixXd(4, 4);
+	MatrixXd Q_init(4, 4);
 	Q_init << 1, 0, 0, 0,
 	          0, 1, 0, 0,
 			  0, 0, 1, 0,
@@ -102,7 +102,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
 	  
 	  x_init << px, py, 0, 0;
 	  
-	  H_init = MatrixXd(3,4);
+	  MatrixXd H_init(3,4);
 	  H_init << 0, 0, 0, 0,
 	            0, 0, 0, 0,
 				0, 0, 0, 0;
@@ -117,7 +117,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
 	  //set the state with the initial location and zero velocity
 	  x_init << measurement_pack.raw_measurements_[0], measurement_pack.raw_measurements_[1], 0, 0;
 	  
-	  H_init = MatrixXd(2,4);
+	  MatrixXd H_init(2,4);
 	  H_init << 1, 0, 0, 0,
 	            0, 1, 0, 0;
 	  MatrixXd R_init = R_laser_; //initialize variable separately???
