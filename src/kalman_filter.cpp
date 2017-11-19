@@ -10,17 +10,16 @@ KalmanFilter::KalmanFilter() {}
 
 KalmanFilter::~KalmanFilter() {}
 
-void KalmanFilter::Init(VectorXd &x_in, MatrixXd &P_in, MatrixXd &F_in,
-                        MatrixXd &H_in, MatrixXd &RR_in, MatrixXd &RL_in,
-						MatrixXd &Q_in, MatrixXd &Hj_in) {
+
+void KalmanFilter::Init(Eigen::VectorXd &x_in, Eigen::MatrixXd &P_in, Eigen::MatrixXd &F_in, Eigen::MatrixXd &H_in, Eigen::MatrixXd &R_in, Eigen::MatrixXd &Q_in)
+
+{
   x_ = x_in;
   P_ = P_in;
   F_ = F_in;
   H_ = H_in;
-  RR_ = RR_in;
-  RL_ = RL_in;
+  R_ = R_in;
   Q_ = Q_in;
-  Hj_ = Hj_in;
 }
 
 void KalmanFilter::Predict() {
@@ -40,17 +39,15 @@ void KalmanFilter::Update(const VectorXd &z) {
   */
   VectorXd z_pred = H_ * x_;
   VectorXd y = z - z_pred;
-  MatrixXd Ht = H_.transpose();
-  MatrixXd S = H_ * P_ * Ht + R_;
-  MatrixXd Si = S.inverse();
-  MatrixXd PHt = P_ * Ht;
-  MatrixXd K = PHt * Si;
+  MatrixXd S = H_ * P_ * H_.transpose() + R_;
+  MatrixXd K = P_ * H_.transpose() * S.inverse();
 
   //new estimate
   x_ = x_ + (K * y);
   long x_size = x_.size();
   MatrixXd I = MatrixXd::Identity(x_size, x_size);
   P_ = (I - K * H_) * P_;
+  
 }
 
 void KalmanFilter::UpdateEKF(const VectorXd &z) {
@@ -59,14 +56,18 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
     * update the state by using Extended Kalman Filter equations
   */
   
-  VectorXd z_pred = Hj_ * x_;
+  VectorXd = z_pred(3);
+  z_pred <<	pow(x_[0] * x_[0] + x_[1] * x_[1], 2),
+			atan(x_[1]/x_[0],
+			(x[0]*x[2] + x[1]*x[3]) / pow(x_[0] * x_[0] + x_[1] * x_[1], 2);
+  
   VectorXd y = z - z_pred;
-  MatrixXd S = Hj_ * P_ * Hj_.transpose() + RR_; //should be R_radar???
-  MatrixXd K = P_ * Hj_.transpose() * S.inverse();
+  MatrixXd S = H_ * P_ * H_.transpose() + R_;
+  MatrixXd K = P_ * H_.transpose() * S.inverse();
 
   //new estimate
   x_ = x_ + (K * y);
   long x_size = x_.size();
   MatrixXd I = MatrixXd::Identity(x_size, x_size);
-  P_ = (I - K * Hj_) * P_;
+  P_ = (I - K * H_) * P_;
 }
