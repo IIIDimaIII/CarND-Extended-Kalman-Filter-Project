@@ -150,6 +150,9 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
 	
    	//compute the time elapsed between the current and previous measurements
 	float dt;
+	float dt_2;
+	float dt_3;
+	float dt_4;
 	dt_2 = pow(dt,2);
 	dt_3 = pow(dt,3);
 	dt_4 = pow(dt,4);
