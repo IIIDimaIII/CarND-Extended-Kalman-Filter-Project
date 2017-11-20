@@ -32,7 +32,7 @@ VectorXd Tools::CalculateRMSE(const vector<VectorXd> &estimations,
 
   //calculate the mean
   for(int j=0; j<4;++j){
-	rmse[j] /= 3;
+	rmse[j] /= estimations.size();
   }
 
   //calculate the squared root
@@ -64,7 +64,11 @@ MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
   if(d>0.0001){
     Hj <<  			   px/d, 						py/d, 			    0,    0,
 				  -py/pow(d,2), 				px/pow(d,2), 			0,    0,
-		  py*(vx*py -vy*px)/pow(d,3/2), px*(vy*px-vx*py)/pow(d,3/2),  px/d, py/d;
-  };
+		  py*(vx*py -vy*px)/pow(d,1.5), px*(vy*px-vx*py)/pow(d,1.5),  px/d, py/d;
+  } else {
+	Hj << 0,0,0,0,
+		  0,0,0,0,
+		  0,0,0,0;
+  }
   return Hj;
 }
