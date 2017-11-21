@@ -58,13 +58,17 @@ MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
 
   //TODO: YOUR CODE HERE
   //check division by zero
-  float d = pow(pow(px,2)+ pow(py,2), 0.5);
+  float c1 = px*px+py*py;
+  float c2 = sqrt(c1);
+  float c3 = (c1*c2);
+  
+  //float d = pow(pow(px,2)+ pow(py,2), 0.5);
     
   //compute the Jacobian matrix
-  if(d>0.0001){
-    Hj <<  			   px/d, 						py/d, 			    0,    0,
-				  -py/pow(d,2), 				px/pow(d,2), 			0,    0,
-		  py*(vx*py -vy*px)/pow(d,1.5), px*(vy*px-vx*py)/pow(d,1.5),  px/d, py/d;
+  if(c1>0.0001){
+    Hj <<  		 (px/c2), 			   (py/c2), 	   0,     0,
+				-(py/c1), 		       (px/c1), 	   0,     0,
+		  py*(vx*py -vy*px)/c3,    px*(vy*px-vx*py)/c3,  px/c2, py/c2;
   } else {
 	Hj << 0,0,0,0,
 		  0,0,0,0,

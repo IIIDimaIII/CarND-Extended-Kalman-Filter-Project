@@ -88,11 +88,11 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
       /**
       Convert radar from polar to cartesian coordinates and initialize state.
       */
-	  float ro;
-      float theta;
-      float ro_dot;
-	  int px;
-	  int py;
+	  double ro;
+      double theta;
+      double ro_dot;
+	  double px;
+	  double py;
 	  ro = measurement_pack.raw_measurements_[0];
 	  theta = measurement_pack.raw_measurements_[1];
 	  ro_dot = measurement_pack.raw_measurements_[2];
@@ -151,11 +151,12 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
 	
    	//compute the time elapsed between the current and previous measurements
 	double dt;
-	double dt_2 = pow(dt,2);
-	double dt_3 = pow(dt,3);;
-	double dt_4 = pow(dt,4);;
+
 	
 	dt = (measurement_pack.timestamp_ - previous_timestamp_) / 1000000.0 ;	//dt - expressed in seconds
+	double dt_2 = pow(dt,2);
+	double dt_3 = pow(dt,3);
+	double dt_4 = pow(dt,4);
 	previous_timestamp_ = measurement_pack.timestamp_;
 	
     // TODO: YOUR CODE HERE
