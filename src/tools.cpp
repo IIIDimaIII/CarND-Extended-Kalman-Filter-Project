@@ -61,8 +61,6 @@ MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
   float c1 = px*px+py*py;
   float c2 = sqrt(c1);
   float c3 = (c1*c2);
-  
-  //float d = pow(pow(px,2)+ pow(py,2), 0.5);
     
   //compute the Jacobian matrix
   if(fabs(c1) > 0.0001){

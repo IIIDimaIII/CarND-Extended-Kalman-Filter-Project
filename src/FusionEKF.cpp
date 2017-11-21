@@ -190,9 +190,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
 	ekf_.R_ = R_radar_;
 	
 	VectorXd z_radar(3);
-	//double phi; //why not theta???
-	//phi = measurement_pack.raw_measurements_[1];
-	//phi = atan2(sin(phi), cos(phi)); //normalizing phi
+
 	z_radar << measurement_pack.raw_measurements_[0],
 			   measurement_pack.raw_measurements_[1],
 			   measurement_pack.raw_measurements_[2];
